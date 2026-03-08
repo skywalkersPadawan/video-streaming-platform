@@ -52,6 +52,8 @@ let VideosController = class VideosController {
                 '-start_number 0',
                 '-hls_time 10',
                 '-hls_list_size 0',
+                '-hls_segment_filename',
+                `${outputDir}/segment_%03d.seg`,
                 '-f hls',
             ])
                 .output(outputPath)

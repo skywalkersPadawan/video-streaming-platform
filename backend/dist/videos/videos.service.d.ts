@@ -15,7 +15,8 @@ export declare class VideosService {
         videoUrl: string;
         thumbnail: string;
     }>;
-    getVideos(page: number, limit: number): Promise<{
+    getVideos(page?: number, limit?: number): Promise<{
+        streamUrl: string;
         id: string;
         createdAt: Date;
         title: string;

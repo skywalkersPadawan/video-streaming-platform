@@ -1,3 +1,5 @@
+import { join } from 'path';
+import * as express from 'express';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
@@ -7,6 +9,14 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bodyParser: false,
   });
+
+  app.enableCors({
+    origin: 'http://localhost:3000',
+  });
+
+  app.useGlobalPipes(new ValidationPipe());
+
+  app.use('/streams', express.static(join(process.cwd(), 'streams')));
 
   app.useGlobalPipes(new ValidationPipe());
 

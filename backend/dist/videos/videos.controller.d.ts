@@ -15,6 +15,7 @@ export declare class VideosController {
         streamUrl: string;
     }>;
     getVideos(page?: number, limit?: number): Promise<{
+        streamUrl: string;
         id: string;
         createdAt: Date;
         title: string;
