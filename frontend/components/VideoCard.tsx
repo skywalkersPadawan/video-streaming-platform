@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 interface Props {
   id: string;
@@ -10,19 +11,19 @@ interface Props {
 
 export default function VideoCard({ id, title, thumbnail }: Props) {
   return (
-    <a href={`/watch/${id}`}>
+    <Link href={`/watch/${id}`}>
       <motion.div
-        whileHover={{ scale: 1.15 }}
-        transition={{ duration: 0.2 }}
-        className="cursor-pointer"
+        whileHover={{ scale: 1.08 }}
+        className="cursor-pointer w-[220px]"
       >
         <img
           src={thumbnail || "https://picsum.photos/400/225"}
-          className="rounded-lg w-[300px] h-[170px] object-cover"
+          alt={title}
+          className="rounded-md object-cover w-full h-[130px]"
         />
 
-        <p className="text-sm mt-2 text-gray-200">{title}</p>
+        <p className="text-sm mt-2 text-gray-300">{title}</p>
       </motion.div>
-    </a>
+    </Link>
   );
 }

@@ -1,5 +1,3 @@
-"use client";
-
 import VideoCard from "./VideoCard";
 
 interface Video {
@@ -16,20 +14,14 @@ interface Props {
 export default function VideoRow({ title, videos }: Props) {
   return (
     <div className="px-10 mt-10">
-      <h2 className="text-xl text-white mb-4">{title}</h2>
+      <h2 className="text-xl mb-4">{title}</h2>
 
-      <div className="flex gap-6 overflow-x-auto pb-4">
+      <div className="flex overflow-x-scroll space-x-4 scrollbar-hide">
         {videos.map((video) => (
-          <div
+          <VideoCard
             key={video.id}
-            className="min-w-[300px]"
-          >
-            <VideoCard
-              id={video.id}
-              title={video.title}
-              thumbnail={video.thumbnail}
-            />
-          </div>
+            {...video}
+          />
         ))}
       </div>
     </div>
