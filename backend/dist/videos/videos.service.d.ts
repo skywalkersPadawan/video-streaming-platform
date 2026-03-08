@@ -9,26 +9,26 @@ export declare class VideosService {
         thumbnail: string;
     }): Promise<{
         id: string;
+        createdAt: Date;
         title: string;
         description: string;
         videoUrl: string;
         thumbnail: string;
-        createdAt: Date;
     }>;
-    getVideos(): Promise<{
+    getVideos(page: number, limit: number): Promise<{
         id: string;
+        createdAt: Date;
         title: string;
         description: string;
         videoUrl: string;
         thumbnail: string;
-        createdAt: Date;
     }[]>;
     getVideoById(id: string): Promise<{
         id: string;
+        createdAt: Date;
         title: string;
         description: string;
         videoUrl: string;
         thumbnail: string;
-        createdAt: Date;
     } | null>;
 }

@@ -5,26 +5,29 @@ export declare class VideosController {
     constructor(videosService: VideosService);
     createVideo(body: CreateVideoDto): Promise<{
         id: string;
+        createdAt: Date;
         title: string;
         description: string;
         videoUrl: string;
         thumbnail: string;
-        createdAt: Date;
     }>;
-    getVideos(): Promise<{
+    uploadVideo(file: Express.Multer.File): Promise<{
+        streamUrl: string;
+    }>;
+    getVideos(page?: number, limit?: number): Promise<{
         id: string;
+        createdAt: Date;
         title: string;
         description: string;
         videoUrl: string;
         thumbnail: string;
-        createdAt: Date;
     }[]>;
     getVideo(id: string): Promise<{
         id: string;
+        createdAt: Date;
         title: string;
         description: string;
         videoUrl: string;
         thumbnail: string;
-        createdAt: Date;
     } | null>;
 }
