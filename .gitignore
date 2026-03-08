@@ -63,3 +63,12 @@ node_modules
 backend/node_modules
 frontend/node_modules
 ======================
+
+
+# video uploads
+backend/uploads
+backend/streams
+
+# ignore generated HLS segments
+*.m3u8
+*.ts
