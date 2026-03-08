@@ -15,6 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VideosController = void 0;
 const common_1 = require("@nestjs/common");
 const videos_service_1 = require("./videos.service");
+const create_video_dto_1 = require("./dto/create-video.dto");
+const common_2 = require("@nestjs/common");
+const jwt_guard_1 = require("../auth/jwt.guard");
+const common_3 = require("@nestjs/common");
 let VideosController = class VideosController {
     videosService;
     constructor(videosService) {
@@ -26,13 +30,17 @@ let VideosController = class VideosController {
     getVideos() {
         return this.videosService.getVideos();
     }
+    getVideo(id) {
+        return this.videosService.getVideoById(id);
+    }
 };
 exports.VideosController = VideosController;
 __decorate([
+    (0, common_2.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [create_video_dto_1.CreateVideoDto]),
     __metadata("design:returntype", void 0)
 ], VideosController.prototype, "createVideo", null);
 __decorate([
@@ -41,6 +49,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], VideosController.prototype, "getVideos", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_3.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], VideosController.prototype, "getVideo", null);
 exports.VideosController = VideosController = __decorate([
     (0, common_1.Controller)('videos'),
     __metadata("design:paramtypes", [videos_service_1.VideosService])

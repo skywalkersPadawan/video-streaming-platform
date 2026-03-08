@@ -9,6 +9,7 @@ import {
   Request,
 } from '@nestjs/common';
 import { Request as ExpressRequest } from 'express';
+import { LoginDto } from './dto/login.dto';
 
 interface AuthenticatedRequest extends ExpressRequest {
   user: {
@@ -22,7 +23,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('login')
-  login(@Body() body: { email: string; password: string }) {
+  login(@Body() body: LoginDto) {
     return this.authService.login(body.email, body.password);
   }
 
