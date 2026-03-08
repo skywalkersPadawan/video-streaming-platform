@@ -16,18 +16,17 @@ export class VideosService {
     });
   }
 
-  async getVideos(page: number, limit: number) {
-    const skip = (page - 1) * limit;
-
+  async getVideos(page = 1, limit = 10) {
     const videos = await this.prisma.video.findMany({
-      skip,
+      skip: (page - 1) * limit,
       take: limit,
-      orderBy: {
-        createdAt: 'desc',
-      },
+      orderBy: { createdAt: 'desc' },
     });
 
-    return videos;
+    return videos.map((video) => ({
+      ...video,
+      streamUrl: '/streams/video-1772975721459-883177471/playlist.m3u8',
+    }));
   }
 
   async getVideoById(id: string) {
