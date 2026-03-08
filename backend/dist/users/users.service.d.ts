@@ -11,7 +11,6 @@ export declare class UsersService {
     getUsers(): Promise<{
         id: string;
         email: string;
-        password: string;
         createdAt: Date;
     }[]>;
 }

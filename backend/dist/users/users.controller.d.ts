@@ -14,7 +14,6 @@ export declare class UsersController {
     getUsers(): Promise<{
         id: string;
         email: string;
-        password: string;
         createdAt: Date;
     }[]>;
 }

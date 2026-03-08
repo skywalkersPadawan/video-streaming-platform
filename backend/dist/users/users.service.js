@@ -61,7 +61,13 @@ let UsersService = class UsersService {
         });
     }
     async getUsers() {
-        return this.prisma.user.findMany();
+        return this.prisma.user.findMany({
+            select: {
+                id: true,
+                email: true,
+                createdAt: true,
+            },
+        });
     }
 };
 exports.UsersService = UsersService;
