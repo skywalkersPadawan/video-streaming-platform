@@ -19,4 +19,10 @@ export class VideosService {
   async getVideos() {
     return this.prisma.video.findMany();
   }
+
+  async getVideoById(id: string) {
+    return this.prisma.video.findUnique({
+      where: { id },
+    });
+  }
 }

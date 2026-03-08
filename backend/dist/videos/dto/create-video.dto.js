@@ -9,31 +9,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.VideosService = void 0;
-const common_1 = require("@nestjs/common");
-const prisma_service_1 = require("../prisma/prisma.service");
-let VideosService = class VideosService {
-    prisma;
-    constructor(prisma) {
-        this.prisma = prisma;
-    }
-    async createVideo(data) {
-        return this.prisma.video.create({
-            data,
-        });
-    }
-    async getVideos() {
-        return this.prisma.video.findMany();
-    }
-    async getVideoById(id) {
-        return this.prisma.video.findUnique({
-            where: { id },
-        });
-    }
-};
-exports.VideosService = VideosService;
-exports.VideosService = VideosService = __decorate([
-    (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
-], VideosService);
-//# sourceMappingURL=videos.service.js.map
+exports.CreateVideoDto = void 0;
+const class_validator_1 = require("class-validator");
+class CreateVideoDto {
+    title;
+    description;
+    videoUrl;
+    thumbnail;
+}
+exports.CreateVideoDto = CreateVideoDto;
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateVideoDto.prototype, "title", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateVideoDto.prototype, "description", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateVideoDto.prototype, "videoUrl", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateVideoDto.prototype, "thumbnail", void 0);
+//# sourceMappingURL=create-video.dto.js.map
