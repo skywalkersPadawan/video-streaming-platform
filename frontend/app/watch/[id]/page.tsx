@@ -1,41 +1,32 @@
 "use client";
 
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import VideoPlayer from "../../../components/VideoPlayer";
+import VideoPlayer from "@/components/VideoPlayer";
 
-interface Video {
-  id: string;
-  title: string;
-  description: string;
-  streamUrl: string;
-}
+export default function Watch() {
+  const params = useParams(); // ✅ make a note of this in the save repo this is the correct way to access params
+  const id = params.id as string;
 
-export default function Watch({ params }: { params: { id: string } }) {
-  const [video, setVideo] = useState<Video | null>(null);
+  const [video, setVideo] = useState<any>(null);
 
   useEffect(() => {
     async function loadVideo() {
       const res = await fetch("http://localhost:3001/videos");
-      const data: Video[] = await res.json();
+      const data = await res.json();
 
-      const found = data.find((v) => v.id === params.id);
-      if (found) setVideo(found);
+      const found = data.find((v: any) => v.id === id);
+      setVideo(found);
     }
 
-    loadVideo();
-  }, [params.id]);
+    if (id) loadVideo();
+  }, [id]);
 
-  if (!video) return <p>Loading...</p>;
-
-  const src = "http://localhost:3001" + video.streamUrl;
+  if (!video) return <p className="text-white p-10">Loading...</p>;
 
   return (
-    <main style={{ padding: 40 }}>
-      <h1>{video.title}</h1>
-
-      <VideoPlayer src={src} />
-
-      <p style={{ marginTop: 20 }}>{video.description}</p>
-    </main>
+    <div className="p-10">
+      <VideoPlayer src="https://www.w3schools.com/html/mov_bbb.mp4" />
+    </div>
   );
 }
