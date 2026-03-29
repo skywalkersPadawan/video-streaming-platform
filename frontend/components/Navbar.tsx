@@ -1,11 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const { isSignedIn } = useUser();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const session = localStorage.getItem("session");
+    setIsLoggedIn(!!session);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,16 +39,26 @@ export default function Navbar() {
         <span className="hover:text-white cursor-pointer">TV Shows</span>
         <span className="hover:text-white cursor-pointer">Movies</span>
         <span className="hover:text-white cursor-pointer">My List</span>
-
-        {!isSignedIn && (
-          <SignInButton mode="modal">
-            <button className="bg-red-600 px-4 py-2 rounded hover:bg-red-700 text-white">
-              Sign In
-            </button>
-          </SignInButton>
+        {!isLoggedIn && (
+          <button
+            onClick={() => router.push("/login")}
+            className="bg-red-600 px-4 py-2 rounded hover:bg-red-700 text-white"
+          >
+            Sign In
+          </button>
         )}
 
-        {isSignedIn && <UserButton />}
+        {isLoggedIn && (
+          <button
+            onClick={() => {
+              localStorage.removeItem("session");
+              router.push("/login");
+            }}
+            className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-600 text-white"
+          >
+            Logout
+          </button>
+        )}
       </div>
     </div>
   );

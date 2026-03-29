@@ -1,36 +1,30 @@
 "use client";
 
 import { useState } from "react";
-import { useSignIn, useClerk } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const { signIn } = useSignIn();
-  const { setActive } = useClerk();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
 
-  const handleLogin = async (e: any) => {
-    e.preventDefault();
-    if (!signIn) return;
+  const handleLogin = (e?: any) => {
+    if (e) e.preventDefault();
 
-    try {
-      const signInAttempt: any = await signIn.create({
-        identifier: email,
-      });
+    const storedUser = localStorage.getItem("user");
 
-      const result: any = await (signIn as any).attemptFirstFactor({
-        strategy: "password",
-        password,
-      });
+    if (!storedUser) {
+      alert("User does not exist. Please sign up.");
+      return;
+    }
 
-      if (result.status === "complete") {
-        await setActive({ session: result.createdSessionId });
-        window.location.href = "/";
-      } else {
-        console.log(result);
-      }
-    } catch (err: any) {
-      console.log("CLERK ERROR:", err.errors);
+    const parsedUser = JSON.parse(storedUser);
+
+    if (parsedUser.email === email && parsedUser.password === password) {
+      localStorage.setItem("session", "true");
+      router.push("/");
+    } else {
+      alert("Invalid credentials");
     }
   };
 
