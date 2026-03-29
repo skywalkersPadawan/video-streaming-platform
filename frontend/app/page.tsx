@@ -19,14 +19,16 @@ export default function Home() {
       <Navbar />
       <HeroBanner />
 
-      <VideoRow
-        title="Trending Now"
-        videos={videos}
-      />
-      <VideoRow
-        title="New Releases"
-        videos={videos}
-      />
+      <div className="space-y-8 px-10 py-6">
+        <VideoRow
+          title="Trending Now"
+          videos={videos}
+        />
+        <VideoRow
+          title="New Releases"
+          videos={videos}
+        />
+      </div>
     </main>
   );
 }

@@ -1,26 +1,26 @@
-import VideoCard from "./VideoCard";
+"use client";
 
-interface Video {
-  id: string;
-  title: string;
-  thumbnail: string;
-}
+import VideoCard from "./VideoCard";
 
 interface Props {
   title: string;
-  videos: Video[];
+  videos: any[];
 }
 
 export default function VideoRow({ title, videos }: Props) {
   return (
-    <div className="px-10 mt-10">
-      <h2 className="text-xl mb-4">{title}</h2>
+    <div className="space-y-3">
+      {/* Section Title */}
+      <h2 className="text-xl md:text-2xl font-bold px-2">{title}</h2>
 
-      <div className="flex overflow-x-scroll space-x-4 scrollbar-hide">
+      {/* Row */}
+      <div className="flex gap-4 overflow-x-auto scrollbar-hide px-2 py-2">
         {videos.map((video) => (
           <VideoCard
             key={video.id}
-            {...video}
+            id={video.id}
+            title={video.title}
+            thumbnail={video.thumbnail}
           />
         ))}
       </div>
