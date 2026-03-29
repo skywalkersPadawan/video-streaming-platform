@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,22 +23,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider
-      appearance={{
-        elements: {
-          card: "bg-black text-white border border-gray-800",
-          headerTitle: "text-white",
-          headerSubtitle: "text-gray-400",
-          socialButtonsBlockButton:
-            "bg-gray-900 hover:bg-gray-800 text-white border border-gray-700",
-          formButtonPrimary: "bg-red-600 hover:bg-red-700 text-white",
-          footerActionLink: "text-red-500 hover:text-red-400",
-        },
-      }}
-    >
-      <html lang="en">
-        <body>{children}</body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body>{children}</body>
+    </html>
   );
 }
