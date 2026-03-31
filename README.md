@@ -51,3 +51,5 @@ Static mock data → passed via props
 After:
 TMDB API → fetched inside VideoRow → dynamic rendering
 ```
+
+temp readme (WIP)
