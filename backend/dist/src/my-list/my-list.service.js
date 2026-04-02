@@ -18,20 +18,20 @@ let MyListService = class MyListService {
         this.prisma = prisma;
     }
     async add(userId, movieId) {
-        try {
-            console.log('ADDING:', userId, movieId);
-            const result = await this.prisma.myList.create({
-                data: { userId, movieId },
-            });
-            console.log('SUCCESS:', result);
-            return result;
+        const existing = await this.prisma.myList.findFirst({
+            where: { userId, movieId },
+        });
+        if (existing) {
+            console.log('ALREADY EXISTS');
+            return existing;
         }
-        catch (err) {
-            console.error('🔥 FULL ERROR:', err);
-            throw err;
-        }
+        console.log('ADDING NEW');
+        return this.prisma.myList.create({
+            data: { userId, movieId },
+        });
     }
-    remove(userId, movieId) {
+    async remove(userId, movieId) {
+        console.log('REMOVING', { userId, movieId });
         return this.prisma.myList.deleteMany({
             where: { userId, movieId },
         });

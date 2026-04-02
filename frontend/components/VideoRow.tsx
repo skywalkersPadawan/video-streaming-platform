@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { fetchMovies } from "@/lib/tmdb";
+import { addToMyList, removeFromMyList } from "@/lib/api";
+import { getMyList } from "@/lib/api";
 
 type Movie = {
   id: number;
@@ -21,6 +23,8 @@ export default function VideoRow({
 }) {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+  const [isInList, setIsInList] = useState(false);
+  const [myListIds, setMyListIds] = useState<number[]>([]);
 
   useEffect(() => {
     const loadMovies = async () => {
@@ -34,6 +38,25 @@ export default function VideoRow({
 
     loadMovies();
   }, [endpoint]);
+
+  useEffect(() => {
+    const loadMyList = async () => {
+      try {
+        const data = await getMyList();
+        setMyListIds(data.map((item: any) => item.movieId));
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    loadMyList();
+  }, []);
+
+  useEffect(() => {
+    if (selectedMovie) {
+      setIsInList(myListIds.includes(selectedMovie.id));
+    }
+  }, [selectedMovie, myListIds]);
 
   return (
     <div className="px-10">
@@ -96,8 +119,26 @@ export default function VideoRow({
                   <button className="bg-white text-black px-3 py-1 rounded">
                     ▶ Play
                   </button>
-                  <button className="bg-gray-700 px-3 py-1 rounded">
-                    + My List
+                  <button
+                    onClick={async () => {
+                      try {
+                        if (isInList) {
+                          await removeFromMyList(selectedMovie.id);
+                          setIsInList(false);
+                          alert("Removed ❌");
+                        } else {
+                          await addToMyList(selectedMovie.id);
+                          setIsInList(true);
+                          alert("Added ✅");
+                        }
+                      } catch (err) {
+                        console.error(err);
+                        alert("Error ❌");
+                      }
+                    }}
+                    className="bg-gray-700 px-3 py-1 rounded"
+                  >
+                    {isInList ? "✔ Added" : "+ My List"}
                   </button>
                 </div>
               </div>
