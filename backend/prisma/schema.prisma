@@ -36,3 +36,10 @@ model Movie {
   thumbnail   String
   videoUrl    String
 }
+
+model MyList {
+  id        String   @id @default(uuid())
+  userId    String
+  movieId   Int
+  createdAt DateTime @default(now())
+}
