@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -35,10 +36,32 @@ export default function Navbar() {
 
       {/* Nav items */}
       <div className="flex gap-6 items-center text-sm text-gray-300">
-        <span className="hover:text-white cursor-pointer">Home</span>
-        <span className="hover:text-white cursor-pointer">TV Shows</span>
-        <span className="hover:text-white cursor-pointer">Movies</span>
-        <span className="hover:text-white cursor-pointer">My List</span>
+        <Link
+          href="/my-list"
+          className="hover:underline"
+        >
+          My List
+        </Link>
+        <Link
+          href="/"
+          className="hover:text-white"
+        >
+          Home
+        </Link>
+        <Link
+          href="/"
+          className="hover:text-white"
+        >
+          TV Shows
+        </Link>
+
+        <Link
+          href="/"
+          className="hover:text-white"
+        >
+          Movies
+        </Link>
+        {/* the pages for movies and tv shows to be added later */}
         {!isLoggedIn && (
           <button
             onClick={() => router.push("/login")}

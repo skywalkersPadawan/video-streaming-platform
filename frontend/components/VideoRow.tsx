@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { fetchMovies } from "@/lib/tmdb";
-import { addToMyList, removeFromMyList } from "@/lib/api";
-import { getMyList } from "@/lib/api";
+import { addToMyList, removeFromMyList, getMyList } from "@/lib/api";
 
 type Movie = {
   id: number;
@@ -17,14 +16,19 @@ type Movie = {
 export default function VideoRow({
   title,
   endpoint,
+  myListIds,
+  setMyListIds,
+  setToast,
 }: {
   title: string;
   endpoint: string;
+  myListIds: number[];
+  setMyListIds: React.Dispatch<React.SetStateAction<number[]>>;
+  setToast: React.Dispatch<React.SetStateAction<string | null>>;
 }) {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [isInList, setIsInList] = useState(false);
-  const [myListIds, setMyListIds] = useState<number[]>([]);
 
   useEffect(() => {
     const loadMovies = async () => {
@@ -38,19 +42,6 @@ export default function VideoRow({
 
     loadMovies();
   }, [endpoint]);
-
-  useEffect(() => {
-    const loadMyList = async () => {
-      try {
-        const data = await getMyList();
-        setMyListIds(data.map((item: any) => item.movieId));
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    loadMyList();
-  }, []);
 
   useEffect(() => {
     if (selectedMovie) {
@@ -124,16 +115,33 @@ export default function VideoRow({
                       try {
                         if (isInList) {
                           await removeFromMyList(selectedMovie.id);
+
+                          // update the local state removed button
+                          setMyListIds((prev) =>
+                            prev.filter((id) => id !== selectedMovie.id),
+                          );
+
                           setIsInList(false);
-                          alert("Removed ❌");
+                          setToast("Removed from My List");
+                          setTimeout(() => setToast(null), 2000);
                         } else {
                           await addToMyList(selectedMovie.id);
+
+                          // update the local state added button
+                          setMyListIds((prev) =>
+                            prev.includes(selectedMovie.id)
+                              ? prev
+                              : [...prev, selectedMovie.id],
+                          );
+
                           setIsInList(true);
-                          alert("Added ✅");
+                          setToast("Added to My List");
+                          setTimeout(() => setToast(null), 2000);
                         }
                       } catch (err) {
                         console.error(err);
-                        alert("Error ❌");
+                        setToast("Failed to update My List");
+                        setTimeout(() => setToast(null), 2000);
                       }
                     }}
                     className="bg-gray-700 px-3 py-1 rounded"
