@@ -1,6 +1,6 @@
 ## 🚀 Overview
 
-This PR replaces the static/mock video data layer with a dynamic, API-driven architecture using TMDB. It introduces category-based browsing and a modal preview system to improve user interaction and scalability.
+Temp PR DOCS 
 
 ---
 
