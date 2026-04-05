@@ -6,6 +6,10 @@ import VideoRow from "../components/VideoRow";
 import { useState, useEffect } from "react";
 import { getMyList } from "@/lib/api";
 
+type MyListItem = {
+  movieId: number;
+};
+
 export default function Home() {
   const [myListIds, setMyListIds] = useState<number[]>([]);
   const [toast, setToast] = useState<string | null>(null);
@@ -13,8 +17,8 @@ export default function Home() {
   useEffect(() => {
     const load = async () => {
       try {
-        const data = await getMyList();
-        setMyListIds(data.map((item: any) => item.movieId));
+        const data: MyListItem[] = await getMyList();
+        setMyListIds(data.map((item) => item.movieId));
       } catch (err) {
         console.error(err);
       }
