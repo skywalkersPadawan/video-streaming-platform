@@ -5,6 +5,14 @@ import { useParams } from "next/navigation";
 import Hls from "hls.js";
 import { saveProgress, getProgress } from "@/lib/api";
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
+type TmdbVideo = {
+  type: string;
+  site: string;
+  key: string;
+};
+
 export default function PlayerPage() {
   const { id } = useParams();
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -19,7 +27,7 @@ export default function PlayerPage() {
       // Load previous progress
       const progressData = await getProgress(movieId);
 
-      let savedTime = progressData?.progress || 0;
+      const savedTime = progressData?.progress || 0;
 
       video.onloadedmetadata = () => {
         if (savedTime > 0) {
@@ -27,7 +35,7 @@ export default function PlayerPage() {
         }
       };
 
-      const streamUrl = `http://localhost:3001/streams/${movieId}/master.m3u8`;
+      const streamUrl = `${BASE_URL}/streams/${movieId}/master.m3u8`;
 
       try {
         const res = await fetch(streamUrl, { method: "HEAD" });
@@ -70,10 +78,10 @@ export default function PlayerPage() {
           `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`,
         );
 
-        const data = await res.json();
+        const data = (await res.json()) as { results?: TmdbVideo[] };
 
         const trailer = data.results?.find(
-          (vid: any) => vid.type === "Trailer" && vid.site === "YouTube",
+          (vid) => vid.type === "Trailer" && vid.site === "YouTube",
         );
 
         if (trailer) {
@@ -91,6 +99,7 @@ export default function PlayerPage() {
     <div className="bg-black h-screen flex items-center justify-center">
       {trailerKey ? (
         <iframe
+          title="Movie trailer"
           className="w-[80%] h-[70%] rounded"
           src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1`}
           allow="autoplay; encrypted-media"
