@@ -6,13 +6,18 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { VideosModule } from './videos/videos.module';
 import { MyListModule } from './my-list/my-list.module';
+import { WatchHistoryModule } from './watch-history/watch-history.module';
 
 @Module({
-  imports: [PrismaModule, UsersModule, AuthModule, VideosModule, MyListModule],
+  imports: [
+    PrismaModule,
+    UsersModule,
+    AuthModule,
+    VideosModule,
+    MyListModule,
+    WatchHistoryModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
-})
-@Module({
-  imports: [MyListModule],
 })
 export class AppModule {}

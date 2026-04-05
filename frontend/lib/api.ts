@@ -1,3 +1,5 @@
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL!;
+
 export const addToMyList = async (movieId: number) => {
   const userId = localStorage.getItem("session");
   const res = await fetch("http://localhost:3001/my-list/add", {
@@ -20,7 +22,7 @@ export const addToMyList = async (movieId: number) => {
 
 export const removeFromMyList = async (movieId: number) => {
   const userId = localStorage.getItem("session");
-  const res = await fetch("http://localhost:3001/my-list/remove", {
+  const res = await fetch(`${BASE_URL}/my-list/remove`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -45,7 +47,7 @@ export const getMyList = async () => {
     throw new Error("User not logged in");
   }
 
-  const res = await fetch(`http://localhost:3001/my-list/${userId}`);
+  const res = await fetch(`${BASE_URL}/my-list/${userId}`);
 
   if (!res.ok) {
     throw new Error("Failed to fetch list");
@@ -57,7 +59,7 @@ export const getMyList = async () => {
 export const saveProgress = async (movieId: number, progress: number) => {
   const userId = localStorage.getItem("session");
 
-  await fetch("http://localhost:3001/watch-history/save", {
+  await fetch(`${BASE_URL}/watch-history/save`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -69,9 +71,7 @@ export const saveProgress = async (movieId: number, progress: number) => {
 export const getProgress = async (movieId: number) => {
   const userId = localStorage.getItem("session");
 
-  const res = await fetch(
-    `http://localhost:3001/watch-history/${userId}/${movieId}`,
-  );
+  const res = await fetch(`${BASE_URL}/watch-history/${userId}/${movieId}`);
 
   return res.json();
 };
