@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { fetchMovies } from "@/lib/tmdb";
 import { addToMyList, removeFromMyList } from "@/lib/api";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 type Movie = {
@@ -29,8 +30,10 @@ export default function VideoRow({
 }) {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
-  const [isInList, setIsInList] = useState(false);
   const router = useRouter();
+
+  const isInList =
+    selectedMovie !== null && myListIds.includes(selectedMovie.id);
 
   useEffect(() => {
     const loadMovies = async () => {
@@ -45,12 +48,6 @@ export default function VideoRow({
     loadMovies();
   }, [endpoint]);
 
-  useEffect(() => {
-    if (selectedMovie) {
-      setIsInList(myListIds.includes(selectedMovie.id));
-    }
-  }, [selectedMovie, myListIds]);
-
   return (
     <div className="px-10">
       <h2 className="text-xl font-bold mb-3">{title}</h2>
@@ -60,12 +57,15 @@ export default function VideoRow({
           {movies.map((movie) => (
             <div
               key={movie.id}
-              className="relative min-w-[160px] cursor-pointer"
+              className="relative w-[160px] shrink-0 aspect-[2/3] cursor-pointer"
               onClick={() => setSelectedMovie(movie)}
             >
-              <img
+              <Image
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                className="rounded"
+                alt={movie.title || movie.name || "Movie poster"}
+                fill
+                className="rounded object-cover"
+                sizes="160px"
               />
             </div>
           ))}
@@ -87,16 +87,24 @@ export default function VideoRow({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative h-[250px]">
-              <img
+              <Image
                 src={
                   selectedMovie.backdrop_path
                     ? `https://image.tmdb.org/t/p/original${selectedMovie.backdrop_path}`
                     : `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}`
                 }
-                className="w-full h-full object-cover"
+                alt={
+                  selectedMovie.title ||
+                  selectedMovie.name ||
+                  "Selected movie backdrop"
+                }
+                fill
+                className="object-cover"
+                sizes="500px"
               />
 
               <button
+                type="button"
                 onClick={() => setSelectedMovie(null)}
                 className="absolute top-3 right-3 text-white text-xl z-20"
               >
@@ -110,6 +118,7 @@ export default function VideoRow({
 
                 <div className="flex gap-2 mt-2">
                   <button
+                    type="button"
                     onClick={() => {
                       if (!selectedMovie) return;
                       router.push(`/watch/${selectedMovie.id}`);
@@ -119,6 +128,7 @@ export default function VideoRow({
                     ▶ Play
                   </button>
                   <button
+                    type="button"
                     onClick={async () => {
                       try {
                         if (isInList) {
@@ -129,7 +139,6 @@ export default function VideoRow({
                             prev.filter((id) => id !== selectedMovie.id),
                           );
 
-                          setIsInList(false);
                           setToast("Removed from My List");
                           setTimeout(() => setToast(null), 2000);
                         } else {
@@ -142,7 +151,6 @@ export default function VideoRow({
                               : [...prev, selectedMovie.id],
                           );
 
-                          setIsInList(true);
                           setToast("Added to My List");
                           setTimeout(() => setToast(null), 2000);
                         }
