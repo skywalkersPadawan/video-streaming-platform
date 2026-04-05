@@ -37,7 +37,7 @@ export default function LoginPage() {
         backgroundPosition: "center",
       }}
     >
-      <div className="absolute top-6 left-10 z-20 text-red-600 text-3xl font-bold">
+      <div className="absolute top-4 left-4 sm:top-6 sm:left-10 z-20 text-red-600 text-2xl sm:text-3xl font-bold">
         NETSTREAM
       </div>
 
@@ -45,9 +45,9 @@ export default function LoginPage() {
       <div className="absolute inset-0 bg-black/70"></div>
 
       {/* Content */}
-      <div className="relative z-10 w-full h-full max-w-6xl mx-auto flex flex-col items-center justify-center px-6 text-center">
-        <div className="max-w-2xl mb-10 mx-auto">
-          <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+      <div className="relative z-10 w-full h-full max-w-6xl mx-auto flex flex-col items-center justify-center px-4 sm:px-6 text-center pt-16 sm:pt-0">
+        <div className="max-w-2xl mb-6 sm:mb-10 mx-auto">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-tight">
             Unlimited movies, TV shows and more
           </h1>
 
@@ -58,7 +58,7 @@ export default function LoginPage() {
 
         <form
           onSubmit={handleLogin}
-          className="bg-black/80 p-8 rounded-md w-[350px] space-y-5 shadow-lg mx-auto"
+          className="bg-black/80 p-6 sm:p-8 rounded-md w-full max-w-[350px] space-y-5 shadow-lg mx-auto"
         >
           <h2 className="text-2xl font-bold">Sign In</h2>
 

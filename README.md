@@ -119,6 +119,8 @@ npm run start:prod
 
 Runs the compiled app from `dist/` (`node dist/main`). Set `PORT` and `DATABASE_URL` in the environment of the host or container.
 
+If you see `Cannot find module '.../dist/main'`, run **`npm run build`** in `backend/` first so `dist/main.js` exists. Do not run `node dist/main` or `npm run start:prod` without a successful build.
+
 **Frontend**
 
 ```bash

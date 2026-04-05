@@ -32,7 +32,7 @@ export default function Home() {
       <Navbar />
       <HeroBanner />
 
-      <div className="space-y-8 px-10 py-6">
+      <div className="space-y-6 sm:space-y-8 px-4 sm:px-6 lg:px-10 py-6">
         <VideoRow
           title="Trending Now"
           endpoint="/trending/movie/week"
@@ -63,7 +63,7 @@ export default function Home() {
         />
       </div>
       {toast && (
-        <div className="fixed bottom-6 right-6 bg-black text-white px-4 py-2 rounded shadow-lg z-[9999]">
+        <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 bg-black text-white px-4 py-3 rounded-lg shadow-lg z-[9999] text-center sm:text-left">
           {toast}
         </div>
       )}
