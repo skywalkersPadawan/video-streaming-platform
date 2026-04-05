@@ -2,5 +2,8 @@
   "dependencies": {
     "@clerk/nextjs": "^7.0.7",
     "hls.js": "^1.6.15"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0"
   }
 }
