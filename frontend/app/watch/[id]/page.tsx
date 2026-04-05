@@ -1,32 +1,109 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import VideoPlayer from "@/components/VideoPlayer";
+import Hls from "hls.js";
+import { saveProgress, getProgress } from "@/lib/api";
 
-export default function Watch() {
-  const params = useParams(); // ✅ make a note of this in the save repo this is the correct way to access params
-  const id = params.id as string;
-
-  const [video, setVideo] = useState<any>(null);
+export default function PlayerPage() {
+  const { id } = useParams();
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [trailerKey, setTrailerKey] = useState<string | null>(null);
+  const movieId = Number(id);
 
   useEffect(() => {
-    async function loadVideo() {
-      const res = await fetch("http://localhost:3001/videos");
-      const data = await res.json();
+    const video = videoRef.current;
+    if (!video) return;
 
-      const found = data.find((v: any) => v.id === id);
-      setVideo(found);
-    }
+    const init = async () => {
+      // Load previous progress
+      const progressData = await getProgress(movieId);
 
-    if (id) loadVideo();
-  }, [id]);
+      let savedTime = progressData?.progress || 0;
 
-  if (!video) return <p className="text-white p-10">Loading...</p>;
+      video.onloadedmetadata = () => {
+        if (savedTime > 0) {
+          video.currentTime = savedTime;
+        }
+      };
+
+      const streamUrl = `http://localhost:3001/streams/${movieId}/master.m3u8`;
+
+      try {
+        const res = await fetch(streamUrl, { method: "HEAD" });
+
+        if (res.ok) {
+          if (video.canPlayType("application/vnd.apple.mpegurl")) {
+            video.src = streamUrl;
+          } else if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(streamUrl);
+            hls.attachMedia(video);
+          }
+
+          video.onloadedmetadata = () => {
+            if (savedTime > 0) {
+              video.currentTime = savedTime;
+            }
+          };
+
+          // throttled progress saving
+          let lastSaved = 0;
+
+          video.addEventListener("timeupdate", () => {
+            if (video.currentTime - lastSaved > 5) {
+              lastSaved = video.currentTime;
+              saveProgress(movieId, video.currentTime);
+            }
+          });
+        } else {
+          await fetchTrailer();
+        }
+      } catch {
+        await fetchTrailer();
+      }
+    };
+
+    const fetchTrailer = async () => {
+      try {
+        const res = await fetch(
+          `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`,
+        );
+
+        const data = await res.json();
+
+        const trailer = data.results?.find(
+          (vid: any) => vid.type === "Trailer" && vid.site === "YouTube",
+        );
+
+        if (trailer) {
+          setTrailerKey(trailer.key);
+        }
+      } catch (err) {
+        console.error("Trailer fetch failed:", err);
+      }
+    };
+
+    init();
+  }, [movieId]);
 
   return (
-    <div className="p-10">
-      <VideoPlayer src="https://www.w3schools.com/html/mov_bbb.mp4" />
+    <div className="bg-black h-screen flex items-center justify-center">
+      {trailerKey ? (
+        <iframe
+          className="w-[80%] h-[70%] rounded"
+          src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1`}
+          allow="autoplay; encrypted-media"
+          allowFullScreen
+        />
+      ) : (
+        <video
+          ref={videoRef}
+          controls
+          autoPlay
+          className="w-[80%] rounded"
+        />
+      )}
     </div>
   );
 }

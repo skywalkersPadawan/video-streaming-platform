@@ -43,3 +43,13 @@ model MyList {
   movieId   Int
   createdAt DateTime @default(now())
 }
+
+model WatchHistory {
+  id        String   @id @default(uuid())
+  userId    String
+  movieId   Int
+  progress  Float
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, movieId])
+}

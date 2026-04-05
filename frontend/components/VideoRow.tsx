@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { fetchMovies } from "@/lib/tmdb";
-import { addToMyList, removeFromMyList, getMyList } from "@/lib/api";
+import { addToMyList, removeFromMyList } from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 type Movie = {
   id: number;
@@ -29,6 +30,7 @@ export default function VideoRow({
   const [movies, setMovies] = useState<Movie[]>([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [isInList, setIsInList] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const loadMovies = async () => {
@@ -107,7 +109,13 @@ export default function VideoRow({
                 </h2>
 
                 <div className="flex gap-2 mt-2">
-                  <button className="bg-white text-black px-3 py-1 rounded">
+                  <button
+                    onClick={() => {
+                      if (!selectedMovie) return;
+                      router.push(`/watch/${selectedMovie.id}`);
+                    }}
+                    className="bg-white text-black px-3 py-1 rounded"
+                  >
                     ▶ Play
                   </button>
                   <button
