@@ -49,15 +49,15 @@ export default function VideoRow({
   }, [endpoint]);
 
   return (
-    <div className="px-10">
-      <h2 className="text-xl font-bold mb-3">{title}</h2>
+    <div className="px-4 sm:px-6 lg:px-10">
+      <h2 className="text-lg sm:text-xl font-bold mb-3">{title}</h2>
 
       <div className="relative overflow-visible">
-        <div className="flex gap-4 overflow-x-scroll scrollbar-hide">
+        <div className="flex gap-3 sm:gap-4 overflow-x-auto overscroll-x-contain scrollbar-hide touch-pan-x pb-1 -mx-1 px-1">
           {movies.map((movie) => (
             <div
               key={movie.id}
-              className="relative w-[160px] shrink-0 aspect-[2/3] cursor-pointer"
+              className="relative w-[130px] sm:w-[160px] shrink-0 aspect-[2/3] cursor-pointer"
               onClick={() => setSelectedMovie(movie)}
             >
               <Image
@@ -65,7 +65,7 @@ export default function VideoRow({
                 alt={movie.title || movie.name || "Movie poster"}
                 fill
                 className="rounded object-cover"
-                sizes="160px"
+                sizes="(max-width: 640px) 130px, 160px"
               />
             </div>
           ))}
@@ -83,10 +83,10 @@ export default function VideoRow({
 
           {/* modal */}
           <div
-            className="relative z-10 bg-zinc-900 rounded-lg overflow-hidden shadow-2xl w-[500px]"
+            className="relative z-10 bg-zinc-900 rounded-lg overflow-hidden shadow-2xl w-[min(100vw-2rem,500px)] max-h-[90vh] flex flex-col mx-4 sm:mx-0"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="relative h-[250px]">
+            <div className="relative h-[200px] sm:h-[250px] shrink-0">
               <Image
                 src={
                   selectedMovie.backdrop_path
@@ -100,7 +100,7 @@ export default function VideoRow({
                 }
                 fill
                 className="object-cover"
-                sizes="500px"
+                sizes="(max-width: 640px) 100vw, 500px"
               />
 
               <button
@@ -168,7 +168,7 @@ export default function VideoRow({
               </div>
             </div>
 
-            <div className="p-4 text-sm text-gray-300">
+            <div className="p-4 text-sm text-gray-300 overflow-y-auto max-h-[40vh] sm:max-h-none">
               {selectedMovie.overview}
             </div>
           </div>

@@ -39,8 +39,8 @@ export default function MyListPage() {
 
   if (error) {
     return (
-      <div className="bg-black text-white min-h-screen p-10">
-        <h1 className="text-3xl mb-6">My List</h1>
+      <div className="bg-black text-white min-h-screen p-4 sm:p-6 lg:p-10">
+        <h1 className="text-2xl sm:text-3xl mb-6">My List</h1>
         <p className="text-red-500">{error}</p>
       </div>
     );
@@ -48,10 +48,10 @@ export default function MyListPage() {
 
   if (loading) {
     return (
-      <div className="bg-black text-white min-h-screen p-10">
-        <h1 className="text-3xl mb-6">My List</h1>
+      <div className="bg-black text-white min-h-screen p-4 sm:p-6 lg:p-10">
+        <h1 className="text-2xl sm:text-3xl mb-6">My List</h1>
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
           {Array.from({ length: 10 }).map((_, i) => (
             <div
               key={i}
@@ -63,10 +63,10 @@ export default function MyListPage() {
     );
   }
   return (
-    <div className="bg-black text-white min-h-screen p-10">
-      <h1 className="text-3xl mb-6">My List</h1>
+    <div className="bg-black text-white min-h-screen p-4 sm:p-6 lg:p-10">
+      <h1 className="text-2xl sm:text-3xl mb-6">My List</h1>
 
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
         {movies.map((movie) => (
           <div
             key={movie.id}

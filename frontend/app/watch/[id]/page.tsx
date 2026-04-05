@@ -96,11 +96,11 @@ export default function PlayerPage() {
   }, [movieId]);
 
   return (
-    <div className="bg-black h-screen flex items-center justify-center">
+    <div className="bg-black min-h-dvh flex items-center justify-center px-3 sm:px-4 py-4">
       {trailerKey ? (
         <iframe
           title="Movie trailer"
-          className="w-[80%] h-[70%] rounded"
+          className="w-full max-w-5xl aspect-video max-h-[min(80vh,100vw)] rounded-md sm:rounded"
           src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1`}
           allow="autoplay; encrypted-media"
           allowFullScreen
@@ -110,7 +110,7 @@ export default function PlayerPage() {
           ref={videoRef}
           controls
           autoPlay
-          className="w-[80%] rounded"
+          className="w-full max-w-5xl aspect-video max-h-[min(80vh,100vw)] rounded-md"
         />
       )}
     </div>
