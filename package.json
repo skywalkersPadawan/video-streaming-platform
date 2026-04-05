@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@clerk/nextjs": "^7.0.7"
+    "@clerk/nextjs": "^7.0.7",
+    "hls.js": "^1.6.15"
   }
 }
