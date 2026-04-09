@@ -6,10 +6,13 @@ import Link from "next/link";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return !!localStorage.getItem("session");
-  });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+    const session = localStorage.getItem("session");
+    setIsLoggedIn(!!session);
+  }, []);
   const [mobileOpen, setMobileOpen] = useState(false);
   const router = useRouter();
 
@@ -68,6 +71,7 @@ export default function Navbar() {
     </>
   );
 
+  if (!mounted) return null;
   return (
     <>
       <div
