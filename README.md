@@ -189,4 +189,5 @@ Optional HLS files  →  Nest static `/streams`  →  Next.js video / hls.js
 
 ## License
 
-See individual packages (`backend` / `frontend`) for license fields; default scaffold is often private / UNLICENSED unless you change it.
+See individual packages (`backend` / `frontend`) for license fields; the project is under MIT license
+
