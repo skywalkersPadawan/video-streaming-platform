@@ -11,7 +11,8 @@ export default function Navbar() {
   useEffect(() => {
     setMounted(true);
     const session = localStorage.getItem("session");
-    setIsLoggedIn(!!session);
+    // Avoid calling setState() directly in the effect body. Use a microtask to defer.
+    Promise.resolve().then(() => setIsLoggedIn(!!session));
   }, []);
   const [mobileOpen, setMobileOpen] = useState(false);
   const router = useRouter();
