@@ -1,3 +1,22 @@
+# README Status
+
+The current README reflects an earlier version of the application and no longer fully represents the project's functionality.
+
+Recent updates introduced:
+
+- Watch History and Continue Watching support
+- Integrated search experience
+- User profile management
+- Browse and genre discovery pages
+- Dedicated Movies and TV Shows sections
+- Kids viewing experience
+- Enhanced media browsing components
+- Homepage and UI improvements
+
+The documentation will be refreshed in a future update to accurately reflect the current architecture, features, setup instructions, and deployment workflow.
+
+> **Important**: In addition, further testing and validation of feature interactions, end-to-end workflows, and cross-feature integrations are still in progress as development continues.
+
 # Video streaming platform
 
 A Netflix-style web app with a **Next.js** frontend, **NestJS** API, **PostgreSQL** (via Prisma), and **The Movie Database (TMDB)** for catalog data. Users can browse categories, open a preview modal, manage a personal list, sign in, and watch content via **HLS** when packaged streams exist, with a **YouTube trailer** fallback when they do not.
@@ -6,11 +25,11 @@ A Netflix-style web app with a **Next.js** frontend, **NestJS** API, **PostgreSQ
 
 ## Repository layout
 
-| Path | Role |
-|------|------|
-| `frontend/` | Next.js 16 app (App Router, Tailwind CSS, HLS.js) |
-| `backend/` | NestJS REST API, Prisma, static HLS under `/streams` |
-| `backend/prisma/` | Schema and migrations |
+| Path               | Role                                                 |
+| ------------------ | ---------------------------------------------------- |
+| `frontend/`        | Next.js 16 app (App Router, Tailwind CSS, HLS.js)    |
+| `backend/`         | NestJS REST API, Prisma, static HLS under `/streams` |
+| `backend/prisma/`  | Schema and migrations                                |
 | `backend/streams/` | Optional on-disk HLS output (served as static files) |
 
 ---
@@ -30,19 +49,19 @@ A Netflix-style web app with a **Next.js** frontend, **NestJS** API, **PostgreSQ
 
 Create `backend/.env` (this file is not committed). Prisma reads it for migrations and the running app.
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `DATABASE_URL` | Yes | PostgreSQL connection string, e.g. `postgresql://USER:PASSWORD@localhost:5432/DATABASE` |
-| `PORT` | No | HTTP port for the API (default **3001**) |
+| Variable       | Required | Description                                                                             |
+| -------------- | -------- | --------------------------------------------------------------------------------------- |
+| `DATABASE_URL` | Yes      | PostgreSQL connection string, e.g. `postgresql://USER:PASSWORD@localhost:5432/DATABASE` |
+| `PORT`         | No       | HTTP port for the API (default **3001**)                                                |
 
 JWT signing uses a hardcoded secret in `auth.module.ts` / `jwt.strategy.ts` for local development. For any shared or production deployment, move that to an environment variable and rotate the secret.
 
 ### Frontend (`frontend/.env.local` or `frontend/.env`)
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `NEXT_PUBLIC_API_URL` | Yes | Base URL of the Nest API, e.g. `http://localhost:3001` (no trailing slash). Used for my list, watch history, and stream checks. |
-| `NEXT_PUBLIC_TMDB_API_KEY` | Yes | TMDB API key for movie rows, hero banner, watch-page trailer fallback, and my-list poster lookups. |
+| Variable                   | Required | Description                                                                                                                     |
+| -------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_API_URL`      | Yes      | Base URL of the Nest API, e.g. `http://localhost:3001` (no trailing slash). Used for my list, watch history, and stream checks. |
+| `NEXT_PUBLIC_TMDB_API_KEY` | Yes      | TMDB API key for movie rows, hero banner, watch-page trailer fallback, and my-list poster lookups.                              |
 
 Restart the Next dev server after changing these.
 
@@ -190,4 +209,3 @@ Optional HLS files  →  Nest static `/streams`  →  Next.js video / hls.js
 ## License
 
 See individual packages (`backend` / `frontend`) for license fields; the project is under MIT license
-
