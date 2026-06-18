@@ -22,4 +22,11 @@ export class WatchHistoryService {
       },
     });
   }
+
+  async getAll(userId: string) {
+    return this.prisma.watchHistory.findMany({
+      where: { userId, progress: { gt: 0 } },
+      orderBy: { updatedAt: 'desc' },
+    });
+  }
 }

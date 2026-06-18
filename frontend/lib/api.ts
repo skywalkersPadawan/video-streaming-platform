@@ -76,4 +76,20 @@ export const getProgress = async (movieId: number) => {
   return res.json();
 };
 
-/* test for .gitignore */
+export type WatchHistoryItem = {
+  movieId: number;
+  progress: number;
+  updatedAt: string;
+};
+
+export const getWatchHistory = async (): Promise<WatchHistoryItem[]> => {
+  const userId = localStorage.getItem("session");
+
+  if (!userId) return [];
+
+  const res = await fetch(`${BASE_URL}/watch-history/list/${userId}`);
+
+  if (!res.ok) return [];
+
+  return res.json();
+};
