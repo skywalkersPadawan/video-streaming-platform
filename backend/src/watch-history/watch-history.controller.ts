@@ -10,6 +10,11 @@ export class WatchHistoryController {
     return this.service.save(body.userId, body.movieId, body.progress);
   }
 
+  @Get('list/:userId')
+  getAll(@Param('userId') userId: string) {
+    return this.service.getAll(userId);
+  }
+
   @Get(':userId/:movieId')
   get(@Param('userId') userId: string, @Param('movieId') movieId: string) {
     return this.service.get(userId, Number(movieId));
