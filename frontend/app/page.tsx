@@ -1,38 +1,35 @@
 "use client";
 
-import Navbar from "../components/Navbar";
-import HeroBanner from "../components/HeroBanner";
-import VideoRow from "../components/VideoRow";
-import { useState, useEffect } from "react";
-import { getMyList } from "@/lib/api";
-
-type MyListItem = {
-  movieId: number;
-};
+import Navbar from "@/components/Navbar";
+import HeroBanner from "@/components/HeroBanner";
+import VideoRow from "@/components/VideoRow";
+import ContinueWatchingRow from "@/components/ContinueWatchingRow";
+import Footer from "@/components/Footer";
+import Toast from "@/components/Toast";
+import { useMyList } from "@/hooks/useMyList";
 
 export default function Home() {
-  const [myListIds, setMyListIds] = useState<number[]>([]);
-  const [toast, setToast] = useState<string | null>(null);
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const data: MyListItem[] = await getMyList();
-        setMyListIds(data.map((item) => item.movieId));
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    load();
-  }, []);
+  const { myListIds, setMyListIds, toast, setToast } = useMyList();
 
   return (
     <main className="bg-black text-white min-h-screen">
       <Navbar />
-      <HeroBanner />
+      <HeroBanner
+        myListIds={myListIds}
+        setMyListIds={setMyListIds}
+        setToast={setToast}
+      />
 
-      <div className="space-y-6 sm:space-y-8 px-4 sm:px-6 lg:px-10 py-6">
+      <div className="space-y-6 sm:space-y-8 py-6">
+        <ContinueWatchingRow />
+        <VideoRow
+          title="Top 10 Movies Today"
+          endpoint="/trending/movie/day"
+          variant="top10"
+          myListIds={myListIds}
+          setMyListIds={setMyListIds}
+          setToast={setToast}
+        />
         <VideoRow
           title="Trending Now"
           endpoint="/trending/movie/week"
@@ -62,11 +59,9 @@ export default function Home() {
           setToast={setToast}
         />
       </div>
-      {toast && (
-        <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 bg-black text-white px-4 py-3 rounded-lg shadow-lg z-[9999] text-center sm:text-left">
-          {toast}
-        </div>
-      )}
+
+      <Footer />
+      <Toast toast={toast} onClose={() => setToast(null)} />
     </main>
   );
 }
