@@ -4,9 +4,6 @@ A Netflix-style web app with a **Next.js** frontend, **NestJS** API, **PostgreSQ
 
 ---
 
-# The Project has changed this README.md is no longer relevant will update soon
-
-
 ## Repository layout
 
 | Path | Role |
